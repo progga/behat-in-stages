@@ -28,7 +28,7 @@ If you are after Behat examples of a certain type, the previous two tables shoul
 ```
 $ git clone https://github.com/progga/behat-in-stages.git
 $ cd behat-in-stages/
-$ cp .env.dist .env
+$ cp .env.dist .env  # Optional step. See Configuration notes below.
 $ composer install
 ```
 

@@ -1,0 +1,110 @@
+#
+# @file
+# Configuration file for our Behat tests.
+#
+#
+default:
+  suites:
+    stage-one:
+      paths:
+        - %paths.base%/tests/features/stage-one
+      contexts:
+        - StepDefs\StageOne\Lamb
+    stage-two:
+      paths:
+        - %paths.base%/tests/features/stage-two
+      contexts:
+        - StepDefs\StageTwo\Lamb
+    stage-three-four-five:
+      paths:
+        - %paths.base%/tests/features/stage-three-four-five
+      contexts:
+        - StepDefs\StageThreeFourFive\DrupalNodeCreation:
+            username: admin
+            # Include the admin password in the .env file.
+            passwd: ~
+            db_src_path: %paths.base%/tests/test-db/behat-test.sqlite
+            # This is where the test site expects its database.  Note that
+            # /dev/shm only exists in GNU/Linux.  Use a different path in other
+            # Operating systems.
+            db_dst_path: /dev/shm/behat-test.sqlite
+    stage-six:
+      paths:
+        - %paths.base%/tests/features/stage-six
+      contexts:
+        - StepDefs\StageSix\DrupalNodeCreation:
+            username: admin
+            # Include the admin password in the .env file.
+            passwd: ~
+            db_src_path: %paths.base%/tests/test-db/behat-test.sqlite
+            # This is where the test site expects its database.  Note that
+            # /dev/shm only exists in GNU/Linux.  Use a different path in other
+            # Operating systems.
+            db_dst_path: /dev/shm/behat-test.sqlite
+        - StepDefs\StageSix\DrupalUserCreation:
+            username: admin
+            # Again, include the real admin password in the .env file.
+            passwd: ~
+            db_src_path: %paths.base%/tests/test-db/behat-test.sqlite
+            db_dst_path: /dev/shm/behat-test.sqlite
+  extensions:
+    Behat\MinkExtension:
+      base_url: http://localhost:8888/
+      show_auto: true
+      show_cmd: 'firefox %s'
+      sessions:
+        default:
+          goutte: ~
+# Demonstrate the use of traits in stage six to conform with the DRY principal.
+dry-with-trait:
+  suites:
+    # Override the stage-six test suit's step definitions.
+    stage-six:
+      contexts:
+        - StepDefs\TraitStage\DrupalNodeCreation:
+            username: admin
+            # Include the real admin password in the .env file.
+            passwd: ~
+            db_src_path: %paths.base%/tests/test-db/behat-test.sqlite
+            db_dst_path: /dev/shm/behat-test.sqlite
+        - StepDefs\TraitStage\DrupalUserCreation:
+            username: admin
+            # Include the real admin password in the .env file.
+            passwd: ~
+            db_src_path: %paths.base%/tests/test-db/behat-test.sqlite
+            db_dst_path: /dev/shm/behat-test.sqlite
+# Demonstrate the use of services in stage six to conform with the DRY principal.
+dry-with-services:
+  suites:
+    stage-six:
+      contexts:
+        - StepDefs\ServiceStage\DrupalNodeCreation:
+          - '@drupal-service'
+        - StepDefs\ServiceStage\DrupalUserCreation:
+          - '@drupal-service'
+      services:
+        drupal-service:
+          class: StepDefs\ServiceStage\DrupalService
+          arguments:
+            username: admin
+            # Include the real admin password in the .env file.
+            passwd: ~
+            db_src_path: %paths.base%/tests/test-db/behat-test.sqlite
+            db_dst_path: /dev/shm/behat-test.sqlite
+# Demonstrate the use of autowired services in stage six to conform with the DRY principal.
+dry-with-autowired-services:
+  suites:
+    stage-six:
+      contexts:
+        - StepDefs\ServiceStage\DrupalNodeCreation
+        - StepDefs\ServiceStage\DrupalUserCreation
+      services:
+        StepDefs\ServiceStage\DrupalService:
+          class: StepDefs\ServiceStage\DrupalService
+          arguments:
+            username: admin
+            # Include the real admin password in the .env file.
+            passwd: ~
+            db_src_path: %paths.base%/tests/test-db/behat-test.sqlite
+            db_dst_path: /dev/shm/behat-test.sqlite
+      autowire: true

@@ -34,11 +34,11 @@ $ composer install
 
 ### Test target (a fresh Drupal site)
 ```
-$ composer create-project drupal-composer/drupal-project behat-test-target
+$ composer create-project --stability dev --no-interaction --no-dev drupal-composer/drupal-project behat-test-target
 $ cd behat-test-target/
-$ ./vendor/bin/drush --yes site-install --db-url=sqlite:///path/to/behat-test.sqlite --admin-pass=RANDOM-PASSWD
+$ ./vendor/bin/drush --yes site-install --db-url=sqlite:///path/to/behat-test.sqlite --account-pass=RANDOM-PASSWD
 $ cp /path/to/behat-test.sqlite /path/to/behat-in-stages/tests/test-db/behat-test.sqlite
-$ ./vendor/bin/drush run-server
+$ ./vendor/bin/drush runserver
 ```
 
 ## Configuration
@@ -57,8 +57,8 @@ $ ./vendor/bin/behat --format=progress --profile=dry-with-autowired-services
 
 ## Software versions used
 - Behat: 3.4
-- PHP: 7.x (5.6 should do, although not tested)
-- PHP extensions: gd, pdo-sqlite, sqlite3
+- PHP: 5.6 or 7.x
+- PHP extensions: curl, gd, pdo-sqlite, sqlite3
 - composer: 1.6+
 - SQLite: 3.x
 

@@ -99,6 +99,17 @@ class DrupalNodeCreation extends RawMinkContext {
   }
 
   /**
+   * @Given a page with :title and :body
+   *
+   * @see self::toTitleCase()
+   */
+  function prepareMore($title, $body) {
+
+    $this->pageTitle = $title;
+    $this->pageBody  = $body;
+  }
+
+  /**
    * @When I fill in the form to create a page node
    */
   function createPage() {

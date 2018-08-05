@@ -21,3 +21,13 @@ Feature: Manage node
     When I fill in the form to create a page node
     Then I end up at page 1 with title "Blah blah"
     And feel very very happy :)
+
+  Scenario Outline: Create some more pages.
+    Given a page with "<title>" and "<body>"
+    When I fill in the form to create a page node
+    Then I end up at page 1 with title "<title>"
+
+    Examples:
+      | title        | body                  |
+      | Foo bar      | Baz qux.              |
+      | Example page | Body of example page. |

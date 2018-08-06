@@ -20,6 +20,10 @@ cache:
     # @see https://github.com/travis-ci/travis-ci/issues/4579
     - $HOME/.composer/cache/files
 
+before_install:
+  # PHP 5.6 is memory hungry.
+  - echo 'memory_limit = 2G' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+
 install:
   - composer install
   - composer create-project --stability dev --no-interaction --no-dev drupal-composer/drupal-project drupal-test-site

@@ -39,4 +39,5 @@ script:
   - ./vendor/bin/behat --format=progress --profile=dry-with-autowired-services
 
 after_script:
+  - echo 'Killing `drush runserver`; PID:' $DRUSH_SERVER_PID
   - kill $DRUSH_SERVER_PID

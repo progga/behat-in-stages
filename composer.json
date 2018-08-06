@@ -19,5 +19,13 @@
         "psr-4": {
           "StepDefs\\": "tests/step-definitions/"
         }
+    },
+    "scripts": {
+      "test": [
+        "behat --format=progress",
+        "behat --format=progress --profile=dry-with-traits",
+        "behat --format=progress --profile=dry-with-services",
+        "behat --format=progress --profile=dry-with-autowired-services"
+      ]
     }
 }

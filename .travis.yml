@@ -36,11 +36,7 @@ before_script:
     DRUSH_SERVER_PID=$!
   - until netstat -ln | grep '127.0.0.1:8888'; do sleep 1; done
 
-script:
-  - ./vendor/bin/behat --format=progress
-  - ./vendor/bin/behat --format=progress --profile=dry-with-trait
-  - ./vendor/bin/behat --format=progress --profile=dry-with-services
-  - ./vendor/bin/behat --format=progress --profile=dry-with-autowired-services
+script: composer test
 
 after_script:
   - kill $DRUSH_SERVER_PID

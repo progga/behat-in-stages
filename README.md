@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/progga/behat-in-stages.svg?branch=master)](https://travis-ci.org/progga/behat-in-stages)
+
 # Behat in stages
 If you are after examples of a certain Behat functionality (e.g. tabular data in test code), this repo could be useful.
 
@@ -49,8 +51,13 @@ $ ./vendor/bin/drush runserver
 ## Test execution
 ```
 $ cd behat-in-stages/
+$ composer test
+```
+Or
+```
+$ cd behat-in-stages/
 $ ./vendor/bin/behat --format=progress
-$ ./vendor/bin/behat --format=progress --profile=dry-with-trait
+$ ./vendor/bin/behat --format=progress --profile=dry-with-traits
 $ ./vendor/bin/behat --format=progress --profile=dry-with-services
 $ ./vendor/bin/behat --format=progress --profile=dry-with-autowired-services
 $ ./vendor/bin/behat --format=progress --suite=stage-two --stop-on-failure # Test only stage-two

@@ -1,0 +1,37 @@
+#
+# @file
+# Travis CI config file for running our Behat examples.
+#
+
+language: php
+
+php:
+  - 5.6
+  - 7.0
+
+addons:
+  apt:
+    packages:
+      - unzip
+      - sqlite3
+
+cache:
+  directories:
+    # @see https://github.com/travis-ci/travis-ci/issues/4579
+    - $HOME/.composer/cache/files
+
+install:
+  - composer install
+  - composer create-project --stability dev --no-interaction --no-dev drupal-composer/drupal-project drupal-test-site
+  - ./drupal-test-site/vendor/bin/drush --yes --root=./drupal-test-site/web/ site-install --db-url=sqlite:///dev/shm/behat-test.sqlite --account-pass=$BEHAT_DRUPAL_ADMIN_PASSWD
+  - cp /dev/shm/behat-test.sqlite ./tests/test-db/behat-test.sqlite
+
+before_script:
+  - ./drupal-test-site/vendor/bin/drush --yes --root=./drupal-test-site/web/ runserver
+  - until netstat -ln | grep '127.0.0.1:8888'; do sleep 1; done
+
+script:
+  - ./vendor/bin/behat --format=progress
+  - ./vendor/bin/behat --format=progress --profile=dry-with-trait
+  - ./vendor/bin/behat --format=progress --profile=dry-with-services
+  - ./vendor/bin/behat --format=progress --profile=dry-with-autowired-services

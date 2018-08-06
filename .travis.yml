@@ -27,7 +27,9 @@ install:
   - cp /dev/shm/behat-test.sqlite ./tests/test-db/behat-test.sqlite
 
 before_script:
-  - ./drupal-test-site/vendor/bin/drush --yes --root=./drupal-test-site/web/ runserver
+  - |
+    ./drupal-test-site/vendor/bin/drush --yes --root=./drupal-test-site/web/ runserver &
+    DRUSH_SERVER_PID=$!
   - until netstat -ln | grep '127.0.0.1:8888'; do sleep 1; done
 
 script:
@@ -35,3 +37,6 @@ script:
   - ./vendor/bin/behat --format=progress --profile=dry-with-trait
   - ./vendor/bin/behat --format=progress --profile=dry-with-services
   - ./vendor/bin/behat --format=progress --profile=dry-with-autowired-services
+
+after_script:
+  - kill $DRUSH_SERVER_PID
